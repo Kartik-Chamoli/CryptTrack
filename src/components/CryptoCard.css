@@ -1,0 +1,59 @@
+.card-container{
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.crypto-card {
+    max-width: 300px;
+    display: inline-block;
+    box-shadow: 5px 0px 39px 9px rgba(0, 0, 0, 0.25);
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:100px auto 0px auto;
+    padding-bottom: 20px;
+    background-color: rgb(88, 90, 177);
+
+}
+
+.crypto-card img{
+    position: absolute;
+    top: -70px;
+    left: 28%;
+    width: 128px;
+    height: 128px;
+}
+
+.crypto-card h1{
+    margin-top: 60px;
+    text-align: center;
+    font-family: 'Sansita', sans-serif;
+    color: white;
+}
+
+.crypto-card span{
+    margin: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(230, 231, 231);
+}
+
+.crypto-card span.field{
+    font-weight: bolder;
+}
+
+
+.change{
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.card-section-heading{
+    font-size: 3em;
+    text-align: center;  
+    font-family: 'Roboto'; 
+}
