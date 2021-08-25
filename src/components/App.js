@@ -42,10 +42,19 @@ class App extends React.Component {
             })
 
             if (response.data[searchTerm] !== undefined) {
+                let duplicate = false;
                 let object = { name: searchTerm, data: response.data[searchTerm] };
                 let symbol = await this.getCryptoSymbol(searchTerm);
                 this.setState({ loading: false });
                 object.symbol = symbol;
+                this.state.coinData.forEach(item=>{
+                    if(item.name===searchTerm){
+                        this.setState({error:`${searchTerm} already present. Please scroll down.`});
+                        duplicate=true;
+                    }
+                })
+                
+                if(duplicate===false)
                 this.setState({ coinData: [...this.state.coinData, object] });
             }
             else {
