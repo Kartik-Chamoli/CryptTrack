@@ -1,6 +1,7 @@
 import React from 'react';
 import './HeroDisplay.css';
 import SearchBar from './SearchBar';
+import ErrorCard from './ErrorCard';
 
 export default function HeroDisplay(props) {
 
@@ -33,6 +34,7 @@ export default function HeroDisplay(props) {
             <header>
                 <h1>Search your favourite cryptocurrencies</h1>
             </header>
+            <ErrorCard errorMessage={props.errorMessage} errorHide={props.errorHide}/>
             <SearchBar onSubmit={props.onSubmit}/>
             <div className="icons-list">
                 {returnIcons('xmr', 'btc', 'eth', 'xlm', 'bnb')}
