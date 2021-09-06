@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
 import Moment from 'moment';
 import HeroDisplay from './HeroDisplay';
 import CryptoList from './CryptoList';
 
-class App extends React.Component {
+const App = () => {
 
-    state = { coinData: [], loading: false, error: null };
+    const [coinData, setCoinData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    getCryptoSymbol = async (name) => {
+    const getCryptoSymbol = async (name) => {
 
         try {
             const response = await Axios.get(`/coins/${name}/history`, {
@@ -22,12 +24,14 @@ class App extends React.Component {
             return response.data.symbol;
         }
         catch (err) {
-            this.setState({ loading: false });
-            this.setState({ error: err });
+            setLoading(false);
+            setError(err);
         }
     }
-    onFormSubmit = async (searchTerm) => {
-        this.setState({ loading: true });
+
+    const onFormSubmit = async (searchTerm) => {
+        setLoading(true);
+
         try {
             const response = await Axios.get('/simple/price', {
                 baseURL: 'https://api.coingecko.com/api/v3',
@@ -44,43 +48,42 @@ class App extends React.Component {
             if (response.data[searchTerm] !== undefined) {
                 let duplicate = false;
                 let object = { name: searchTerm, data: response.data[searchTerm] };
-                let symbol = await this.getCryptoSymbol(searchTerm);
-                this.setState({ loading: false });
+                let symbol = await getCryptoSymbol(searchTerm);
+                setLoading(false);
                 object.symbol = symbol;
-                this.state.coinData.forEach(item=>{
-                    if(item.name===searchTerm){
-                        this.setState({error:`${searchTerm} already present. Please scroll down.`});
-                        duplicate=true;
+                coinData.forEach(item => {
+                    if (item.name === searchTerm) {
+                        setError(`${searchTerm} already present. Please scroll down.`);
+                        duplicate = true;
                     }
                 })
-                
-                if(duplicate===false)
-                this.setState({ coinData: [...this.state.coinData, object] });
+
+                if (duplicate === false)
+                    setCoinData([...coinData, object]);
             }
             else {
-                this.setState({ loading: false,
-                     error: `Unable to look up ${searchTerm} crypto.
-                      Try again with correct name or find its id on coingecko`
-                     });
+                setLoading(false);
+                setError(`Unable to look up ${searchTerm} crypto.
+                Try again with correct name or find its id on coingecko`)
             }
 
         }
         catch (err) {
             alert(err);
-            this.setState({ loading: false, error: err });
+            setLoading(false);
+            setError(err);
         }
     }
 
-    onErrorHide = () => {
-        this.setState({ error: null });
+    const onErrorHide = () => {
+        setError(null);
     }
 
-    render() {
-        return <div>
-            <HeroDisplay onSubmit={this.onFormSubmit} loading={this.state.loading} errorMessage={this.state.error} errorHide={this.onErrorHide} loadingText={'Loading...'} />
-            <CryptoList coinData={this.state.coinData} />
-        </div>
-    }
+    return (<div>
+        <HeroDisplay onSubmit={onFormSubmit} loading={loading} errorMessage={error} errorHide={onErrorHide} loadingText={'Loading...'} />
+        <CryptoList coinData={coinData} />
+    </div>
+    );
 
 }
 
